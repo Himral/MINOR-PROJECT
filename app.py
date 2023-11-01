@@ -17,5 +17,10 @@ if uploaded_file is not None:
     user_list.insert(0,"Overall")
     st.sidebar.selectbox("Show analysis wrt",user_list)
 
-    if(st.sidebar.button("Show analysis"))
+    if(st.sidebar.button("Show analysis")):
+
+        col1 , col2 , col3, col4 = st.beta_columns(4)
+        with col1:
+            st.header("Total Messages")
+
 
