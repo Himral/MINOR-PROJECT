@@ -14,3 +14,4 @@ def fetch_stats(selected_user,df):
     num_media_messages=df[df['message'] == '<Media omitted>\n'].shape[0]
 
     return num_messages,len(words),num_media_messages
+    
