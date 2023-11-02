@@ -1,5 +1,6 @@
 import streamlit as st
 import preprocessor, helper
+import matplotlib.pyplot as plt
 st.sidebar.title("Whatsapp Chat analyser")
 
 uploaded_file = st.sidebar.file_uploader("Choose a file")
@@ -19,7 +20,7 @@ if uploaded_file is not None:
 
     if(st.sidebar.button("Show analysis")):
 
-        num_messages, words,num_media_messages = helper.fetch_stats(selected_user,df)
+        num_messages, words,num_media_messages, num_links = helper.fetch_stats(selected_user,df)
         col1 , col2 , col3, col4 = st.beta_columns(4)
         with col1:
             st.header("Total Messages")
@@ -30,5 +31,23 @@ if uploaded_file is not None:
         with col3:
             st.header("Media Shared")
             st.title(num_media_messages)
+        with col4:
+            st.header("Links Shared")
+            st.title(num_links)
+            
+        #most active users (in group)
+        
+        if selected_user == 'Overall':
+            st.title('Most Active Users')
+            x=helper.most_busy_users(df)
+            fig, ax = plt.subplot()
+
+            col1, col2 = st.beta_coloumns(2)
+            
+            with col1:
+                name = x.index
+                count = x.values
+                ax.bar(name,count)
+                st.pyplot(fig)
 
 
