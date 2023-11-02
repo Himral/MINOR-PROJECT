@@ -39,15 +39,35 @@ if uploaded_file is not None:
         
         if selected_user == 'Overall':
             st.title('Most Active Users')
-            x=helper.most_busy_users(df)
-            fig, ax = plt.subplot()
+            x, new_df =helper.most_busy_users(df)
+            fig, ax = plt.subplots()
 
             col1, col2 = st.beta_coloumns(2)
             
             with col1:
                 name = x.index
                 count = x.values
-                ax.bar(name,count)
+                ax.bar(name,count,color = 'purple')
+                plt.xticks(rotation = 'vertical')
                 st.pyplot(fig)
-
+            
+            with col2:
+                st.dataframe(new_df)
+                
+        #wordcloud
+        st.title("Word Cloud")
+        df_wc = helper.create_wordcloud(selected_user,df)
+        fig, ax = plt.subplots()
+        ax.plt.imshow(df_wc)
+        st.pyplot(fig)
+        
+        #Frequent Words
+        most_common_df= helper.most_common_words(selected_user,df)
+        
+        fig, ax = plt.subplots()
+        ax.barh(most_common_df[0],most_common_df[1])
+        plt.xticks(rotation = 'vertical')
+        st.title('Most frequent Words')
+        st.pyplot(fig)
+        
 
