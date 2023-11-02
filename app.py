@@ -12,7 +12,7 @@ if uploaded_file is not None:
     st.dataframe(df)
 
     #fetch unique users
-    user_list = df['user'].unique.tolist()
+    user_list = df['user'].unique().tolist()
     user_list.remove('group_notification')
     user_list.sort()
     user_list.insert(0,"Overall")
@@ -21,7 +21,7 @@ if uploaded_file is not None:
     if(st.sidebar.button("Show analysis")):
 
         num_messages, words,num_media_messages, num_links = helper.fetch_stats(selected_user,df)
-        col1 , col2 , col3, col4 = st.beta_columns(4)
+        col1 , col2 , col3, col4 = st.columns(4)
         with col1:
             st.header("Total Messages")
             st.title(num_messages)
@@ -42,7 +42,7 @@ if uploaded_file is not None:
             x, new_df =helper.most_busy_users(df)
             fig, ax = plt.subplots()
 
-            col1, col2 = st.beta_coloumns(2)
+            col1, col2 = st.columns(2)
             
             with col1:
                 name = x.index
@@ -58,7 +58,7 @@ if uploaded_file is not None:
         st.title("Word Cloud")
         df_wc = helper.create_wordcloud(selected_user,df)
         fig, ax = plt.subplots()
-        ax.plt.imshow(df_wc)
+        ax.imshow(df_wc)
         st.pyplot(fig)
         
         #Frequent Words
