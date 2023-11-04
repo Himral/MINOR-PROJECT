@@ -34,7 +34,16 @@ if uploaded_file is not None:
         with col4:
             st.header("Links Shared")
             st.title(num_links)
-            
+
+        #monthly timeline
+        
+        st.title("Monthly_Timeline")
+        timeline=helper.monthly_timeline(selected_user,df)
+        fig,ax=plt.subplots()
+        ax.plot(timeline['time'],timeline['message'],color='green')
+        plt.xticks(rotation='vertical')
+        st.pyplot('fig')
+
         #most active users (in group)
         
         if selected_user == 'Overall':
@@ -54,14 +63,6 @@ if uploaded_file is not None:
             with col2:
                 st.dataframe(new_df)
 
-        #monthly timeline
-        st.title("Monthly_Timeline")
-        timeline=helper.monthly_timeline(selected_user,df)
-        fig,ax=plt.subplots()
-        ax.plot(timeline['time'],timeline['message'],color='green')
-        plt.xticks(rotation='vertical')
-        st.pyplot('fig')
-
         #activity map
         st.title('Activity Map')
         col1,col2=st.columns(2)
@@ -80,7 +81,7 @@ if uploaded_file is not None:
             fig,ax=plt.subplots()
             ax.bar(busy_month.index,busy_month.values,color='orange')
             plt.xticks(rotation='vertical')
-            st.pyplot(fig)
+            st.pyplot(fig) 
         st.title("Weekly Activity Map")
         user_heatmap=helper.activity_heatmap(selected_user,df)
         fig,ax=plt.subplots()
