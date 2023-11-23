@@ -2,7 +2,9 @@ import streamlit as st
 import preprocessor, helper
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import matplotlib
+import nltk
+st.set_page_config(layout="wide")
 st.sidebar.title("Whatsapp Chat analyser")
 
 uploaded_file = st.sidebar.file_uploader("Choose a file")
@@ -15,7 +17,9 @@ if uploaded_file is not None:
 
     #fetch unique users
     user_list = df['user'].unique().tolist()
-    user_list.remove('group_notification')
+    if 'group_notification' in user_list:
+        user_list.remove('group_notification')
+
     user_list.sort()
     user_list.insert(0,"Overall")
     selected_user = st.sidebar.selectbox("Show analysis wrt",user_list)
@@ -44,18 +48,18 @@ if uploaded_file is not None:
         fig,ax=plt.subplots()
         ax.plot(timeline['time'],timeline['message'],color='green')
         plt.xticks(rotation='vertical')
-        st.pyplot('fig')
+        st.pyplot(fig)
 
         #daily timeline
-
+        sns.set_style("darkgrid")
         st.title("Daily Timeline")
         daily_timeline=helper.daily_timeline(selected_user,df)
         fig,ax=plt.subplots()
         ax.plot(daily_timeline['only_date'],daily_timeline['message'],color='brown')
         plt.xticks(rotation='vertical')
-        st.pyplot('fig')
+        st.pyplot(fig)
 
-
+    
         #most active users (in group)
         
         if selected_user == 'Overall':
@@ -93,7 +97,8 @@ if uploaded_file is not None:
             fig,ax=plt.subplots()
             ax.bar(busy_month.index,busy_month.values,color='orange')
             plt.xticks(rotation='vertical')
-            st.pyplot(fig) 
+            st.pyplot(fig)
+             
         st.title("Weekly Activity Map")
         user_heatmap=helper.activity_heatmap(selected_user,df)
         fig,ax=plt.subplots()
@@ -117,16 +122,10 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
         #emoji analysis
-        emoji_df=helper.emoji_helper(selected_user,df)
-        st.title("Emoji Analysis")
 
-        col1,col2=st.columns(2)
-
-        with col1:
-            st.dataframe(emoji_df)
-        with col2:
-            fig,ax=plt.subplots()
-            ax.pie(emoji_df[1].head(),labels=emoji_df[0].head(),autopct="%0.2f")
-            st.pyplot(fig)
+        #Sentiment Analysis
+        
+        
+    
         
 
