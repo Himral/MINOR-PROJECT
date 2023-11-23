@@ -1,10 +1,6 @@
 import streamlit as st
 import preprocessor, helper
 import matplotlib.pyplot as plt
-import seaborn as sns
-import matplotlib
-import nltk
-st.set_page_config(layout="wide")
 st.sidebar.title("Whatsapp Chat analyser")
 
 uploaded_file = st.sidebar.file_uploader("Choose a file")
@@ -16,10 +12,8 @@ if uploaded_file is not None:
     st.dataframe(df)
 
     #fetch unique users
-    user_list = df['user'].unique().tolist()
-    if 'group_notification' in user_list:
-        user_list.remove('group_notification')
-
+    user_list = df['user'].unique.tolist()
+    user_list.remove('group_notification')
     user_list.sort()
     user_list.insert(0,"Overall")
     selected_user = st.sidebar.selectbox("Show analysis wrt",user_list)
@@ -40,26 +34,7 @@ if uploaded_file is not None:
         with col4:
             st.header("Links Shared")
             st.title(num_links)
-
-        #monthly timeline
-
-        st.title("Monthly Timeline")
-        timeline=helper.monthly_timeline(selected_user,df)
-        fig,ax=plt.subplots()
-        ax.plot(timeline['time'],timeline['message'],color='green')
-        plt.xticks(rotation='vertical')
-        st.pyplot(fig)
-
-        #daily timeline
-        sns.set_style("darkgrid")
-        st.title("Daily Timeline")
-        daily_timeline=helper.daily_timeline(selected_user,df)
-        fig,ax=plt.subplots()
-        ax.plot(daily_timeline['only_date'],daily_timeline['message'],color='brown')
-        plt.xticks(rotation='vertical')
-        st.pyplot(fig)
-
-    
+            
         #most active users (in group)
         
         if selected_user == 'Overall':
@@ -78,32 +53,6 @@ if uploaded_file is not None:
             
             with col2:
                 st.dataframe(new_df)
-
-        #activity map
-        st.title('Activity Map')
-        col1,col2=st.columns(2)
-
-        with col1:
-            st.header("Most Busy Day")
-            busy_day=helper.week_activity_map(selected_user,df)
-            fig,ax=plt.subplots()
-            ax.bar(busy_day.index,busy_day.values,color='purple')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-
-        with col2:
-            st.header("Most Busy Month")
-            busy_month=helper.month_activity_map(selected_user,df)
-            fig,ax=plt.subplots()
-            ax.bar(busy_month.index,busy_month.values,color='orange')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-             
-        st.title("Weekly Activity Map")
-        user_heatmap=helper.activity_heatmap(selected_user,df)
-        fig,ax=plt.subplots()
-        ax = sns.heatmap(user_heatmap)
-        st.pyplot(fig)
                 
         #wordcloud
         st.title("Word Cloud")
@@ -120,7 +69,6 @@ if uploaded_file is not None:
         plt.xticks(rotation = 'vertical')
         st.title('Most frequent Words')
         st.pyplot(fig)
-
-        #emoji analysis
+        
 
         #Sentiment Analysis
