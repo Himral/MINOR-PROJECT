@@ -3,7 +3,7 @@ import preprocessor, helper
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib
-import nltk
+
 st.set_page_config(layout="wide")
 st.sidebar.title("Whatsapp Chat analyser")
 
