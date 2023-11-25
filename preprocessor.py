@@ -9,10 +9,12 @@ def preprocess(data):
 
     df = pd.DataFrame({'user_message': messages, 'message_date': dates})
     # convert message_date type
-    df['message_date'] = pd.to_datetime(df['message_date'], format="%m/%d/%y, %H:%M - ")
-
+    try:
+        df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
+    except:
+        df['message_date'] = pd.to_datetime(df['message_date'], format='%m/%d/%y, %H:%M - ')
     df.rename(columns={'message_date': 'date'}, inplace=True)
-
+    
     users = []
     messages = []
     for message in df['user_message']:
@@ -47,5 +49,5 @@ def preprocess(data):
             period.append(str(hour) + "-" + str(hour + 1))
 
     df['period'] = period
-
+    df = df[df['user'] != 'group_notification']
     return df
