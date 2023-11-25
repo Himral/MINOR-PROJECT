@@ -7,6 +7,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+st.set_page_config(layout="wide")
 st.sidebar.title("Whatsapp Chat Analyzer")
 
 nltk.download('vader_lexicon')
