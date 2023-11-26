@@ -53,7 +53,7 @@ if uploaded_file is not None:
             st.header("Links Shared")
             st.title(num_links)
 
-        #monthly timeline
+        #monthly timeline quantitative
 
         st.title("Monthly Timeline")
         timeline=helper.monthly_timeline(selected_user,df)
@@ -62,6 +62,78 @@ if uploaded_file is not None:
         plt.xticks(rotation='vertical')
         st.pyplot(fig)
 
+        from nltk.sentiment.vader import SentimentIntensityAnalyzer
+    
+        # Object
+        sentiments = SentimentIntensityAnalyzer()
+    
+        # Creating different columns for (Positive/Negative/Neutral)
+        df["po"] = [sentiments.polarity_scores(i)["pos"] for i in df["message"]] # Positive
+        df["ne"] = [sentiments.polarity_scores(i)["neg"] for i in df["message"]] # Negative
+        df["nu"] = [sentiments.polarity_scores(i)["neu"] for i in df["message"]] # Neutral
+    
+        # To indentify true sentiment per row in message column
+        def sentiment(d):
+            if d["po"] >= d["ne"] and d["po"] >= d["nu"]:
+                return 1
+            if d["ne"] >= d["po"] and d["ne"] >= d["nu"]:
+                return -1
+            if d["nu"] >= d["po"] and d["nu"] >= d["ne"]:
+                return 0
+
+        # Creating new column & Applying function
+        df['value'] = df.apply(lambda row: sentiment(row), axis=1)
+        # Monthly timeline Sentiment
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Positive)</h3>",unsafe_allow_html=True)
+                
+            timeline = helper.sentiment_monthly_timeline(selected_user, df,1)
+                
+            fig, ax = plt.subplots()
+            ax.plot(timeline['time'], timeline['message'], color='green')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+        with col2:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Neutral)</h3>",unsafe_allow_html=True)
+                
+            timeline = helper.sentiment_monthly_timeline(selected_user, df,0)
+                
+            fig, ax = plt.subplots()
+            ax.plot(timeline['time'], timeline['message'], color='grey')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+        with col3:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Negative)</h3>",unsafe_allow_html=True)
+                
+            timeline = helper.sentiment_monthly_timeline(selected_user, df,-1)
+                
+            fig, ax = plt.subplots()
+            ax.plot(timeline['time'], timeline['message'], color='red')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+
+            # Percentage contributed
+        if selected_user == 'Overall':
+            col1,col2,col3 = st.columns(3)
+            with col1:
+                st.markdown("<h3 style='text-align: center; color: black;'>Most Positive Contribution</h3>",unsafe_allow_html=True)
+                x = helper.sentiment_percentage(df, 1)
+                    
+                    # Displaying
+                st.dataframe(x)
+            with col2:
+                st.markdown("<h3 style='text-align: center; color: black;'>Most Neutral Contribution</h3>",unsafe_allow_html=True)
+                y = helper.sentiment_percentage(df, 0)
+                    
+                    # Displaying
+                st.dataframe(y)
+            with col3:
+                st.markdown("<h3 style='text-align: center; color: black;'>Most Negative Contribution</h3>",unsafe_allow_html=True)
+                z = helper.sentiment_percentage(df, -1)
+                    
+                    # Displaying
+                st.dataframe(z)
         #daily timeline
         sns.set_style("darkgrid")
         st.title("Daily Timeline")
@@ -134,27 +206,7 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
         #Sentiment Analysis
-        from nltk.sentiment.vader import SentimentIntensityAnalyzer
-    
-        # Object
-        sentiments = SentimentIntensityAnalyzer()
-    
-        # Creating different columns for (Positive/Negative/Neutral)
-        df["po"] = [sentiments.polarity_scores(i)["pos"] for i in df["message"]] # Positive
-        df["ne"] = [sentiments.polarity_scores(i)["neg"] for i in df["message"]] # Negative
-        df["nu"] = [sentiments.polarity_scores(i)["neu"] for i in df["message"]] # Neutral
-    
-        # To indentify true sentiment per row in message column
-        def sentiment(d):
-            if d["po"] >= d["ne"] and d["po"] >= d["nu"]:
-                return 1
-            if d["ne"] >= d["po"] and d["ne"] >= d["nu"]:
-                return -1
-            if d["nu"] >= d["po"] and d["nu"] >= d["ne"]:
-                return 0
-
-        # Creating new column & Applying function
-        df['value'] = df.apply(lambda row: sentiment(row), axis=1)
+        
         
             # Monthly activity map
         col1, col2, col3 = st.columns(3)
@@ -282,57 +334,7 @@ if uploaded_file is not None:
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
 
-            # Monthly timeline
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Positive)</h3>",unsafe_allow_html=True)
-                
-            timeline = helper.sentiment_monthly_timeline(selected_user, df,1)
-                
-            fig, ax = plt.subplots()
-            ax.plot(timeline['time'], timeline['message'], color='green')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col2:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Neutral)</h3>",unsafe_allow_html=True)
-                
-            timeline = helper.sentiment_monthly_timeline(selected_user, df,0)
-                
-            fig, ax = plt.subplots()
-            ax.plot(timeline['time'], timeline['message'], color='grey')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col3:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Negative)</h3>",unsafe_allow_html=True)
-                
-            timeline = helper.sentiment_monthly_timeline(selected_user, df,-1)
-                
-            fig, ax = plt.subplots()
-            ax.plot(timeline['time'], timeline['message'], color='red')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-
-            # Percentage contributed
-        if selected_user == 'Overall':
-            col1,col2,col3 = st.columns(3)
-            with col1:
-                st.markdown("<h3 style='text-align: center; color: black;'>Most Positive Contribution</h3>",unsafe_allow_html=True)
-                x = helper.sentiment_percentage(df, 1)
-                    
-                    # Displaying
-                st.dataframe(x)
-            with col2:
-                st.markdown("<h3 style='text-align: center; color: black;'>Most Neutral Contribution</h3>",unsafe_allow_html=True)
-                y = helper.sentiment_percentage(df, 0)
-                    
-                    # Displaying
-                st.dataframe(y)
-            with col3:
-                st.markdown("<h3 style='text-align: center; color: black;'>Most Negative Contribution</h3>",unsafe_allow_html=True)
-                z = helper.sentiment_percentage(df, -1)
-                    
-                    # Displaying
-                st.dataframe(z)
+        
 
 
             # Most Positive,Negative,Neutral User...
