@@ -54,13 +54,14 @@ if uploaded_file is not None:
             st.title(num_links)
 
         #monthly timeline quantitative
-
-        st.title("Monthly Timeline")
+        st.markdown("<h2 style='text-align: center; color: green;'>Monthly Timeline Quantitative Analysis</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
         timeline=helper.monthly_timeline(selected_user,df)
-        fig,ax=plt.subplots()
-        ax.plot(timeline['time'],timeline['message'],color='green')
-        plt.xticks(rotation='vertical')
-        st.pyplot(fig)
+
+        st.area_chart(timeline,x ='time',y ='message')
+        
+        
 
         from nltk.sentiment.vader import SentimentIntensityAnalyzer
     
@@ -84,9 +85,11 @@ if uploaded_file is not None:
         # Creating new column & Applying function
         df['value'] = df.apply(lambda row: sentiment(row), axis=1)
         # Monthly timeline Sentiment
+        st.markdown("<h2 style='text-align: center; color: green;'>Monthly Timeline Sentiment Analysis</h2>",unsafe_allow_html=True)
+        
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Positive)</h3>",unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: center; color: black;'>Positive</h3>",unsafe_allow_html=True)
                 
             timeline = helper.sentiment_monthly_timeline(selected_user, df,1)
                 
@@ -95,7 +98,7 @@ if uploaded_file is not None:
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
         with col2:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Neutral)</h3>",unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: center; color: black;'>Neutral</h3>",unsafe_allow_html=True)
                 
             timeline = helper.sentiment_monthly_timeline(selected_user, df,0)
                 
@@ -104,7 +107,7 @@ if uploaded_file is not None:
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
         with col3:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Timeline(Negative)</h3>",unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: center; color: black;'>Negative</h3>",unsafe_allow_html=True)
                 
             timeline = helper.sentiment_monthly_timeline(selected_user, df,-1)
                 
@@ -145,7 +148,6 @@ if uploaded_file is not None:
 
     
         #most active users (in group)
-        
         if selected_user == 'Overall':
             st.title('Most Active Users')
             x, new_df =helper.most_busy_users(df)
