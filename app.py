@@ -54,7 +54,7 @@ if uploaded_file is not None:
             st.title(num_links)
 
         #monthly timeline quantitative
-        st.markdown("<h2 style='text-align: center; color: green;'>Monthly Timeline Quantitative Analysis</h2>",unsafe_allow_html=True)
+        st. markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis : Monthly Timeline</h2>", unsafe_allow_html=True)
         st.subheader("")
         st.write("  ")
         timeline=helper.monthly_timeline(selected_user,df)
@@ -85,7 +85,7 @@ if uploaded_file is not None:
         # Creating new column & Applying function
         df['value'] = df.apply(lambda row: sentiment(row), axis=1)
         # Monthly timeline Sentiment
-        st.markdown("<h2 style='text-align: center; color: green;'>Monthly Timeline Sentiment Analysis</h2>",unsafe_allow_html=True)
+        st. markdown("<h2 style='text-align: center; color: green;'>Sentiment Analysis : Monthly Timeline</h2>", unsafe_allow_html=True)
         
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -139,14 +139,48 @@ if uploaded_file is not None:
                 st.dataframe(z)
         #daily timeline
         sns.set_style("darkgrid")
-        st.title("Daily Timeline")
+        st. markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis : Daily Timeline</h2>", unsafe_allow_html=True)
         daily_timeline=helper.daily_timeline(selected_user,df)
         fig,ax=plt.subplots()
+        st.line_chart(daily_timeline,x = "only_date",y = "message")
         ax.plot(daily_timeline['only_date'],daily_timeline['message'],color='brown')
         plt.xticks(rotation='vertical')
-        st.pyplot(fig)
+        #st.pyplot(fig)
 
-    
+    # Daily timeline Sentiment
+        st. markdown("<h2 style='text-align: center; color: green;'>Sentiment Analysis : Daily Timeline</h2>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown("<h3 style='text-align: center; color: black;'>Positive</h3>",unsafe_allow_html=True)
+                
+            daily_timeline = helper.sentiment_daily_timeline(selected_user, df, 1)
+                
+            fig, ax = plt.subplots()
+            st.line_chart(daily_timeline,x = "only_date",y = "message")
+            ax.plot(daily_timeline['only_date'],daily_timeline['message'], color='green')
+            plt.xticks(rotation='vertical')
+            #st.pyplot(fig)
+        with col2:
+            st.markdown("<h3 style='text-align: center; color: black;'>Neutral</h3>",unsafe_allow_html=True)
+                
+            daily_timeline = helper.sentiment_daily_timeline(selected_user, df, 0)
+                
+            fig, ax = plt.subplots()
+            st.line_chart(daily_timeline,x = "only_date",y = "message")
+            ax.plot(daily_timeline['only_date'], daily_timeline['message'], color='grey')
+            plt.xticks(rotation='vertical')
+            #st.pyplot(fig)
+        with col3:
+            st.markdown("<h3 style='text-align: center; color: black;'>Negative</h3>",unsafe_allow_html=True)
+                
+            daily_timeline = helper.sentiment_daily_timeline(selected_user, df, -1)
+                
+            fig, ax = plt.subplots()
+            st.line_chart(daily_timeline,x = "only_date",y = "message")
+            ax.plot(daily_timeline['only_date'],daily_timeline['message'], color='red')
+            plt.xticks(rotation='vertical')
+            #st.pyplot(fig)
+            
         #most active users (in group)
         if selected_user == 'Overall':
             st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Most Active Users</h2>",unsafe_allow_html=True)
@@ -442,36 +476,7 @@ if uploaded_file is not None:
             # Weekly activity map
         
 
-            # Daily timeline
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown("<h3 style='text-align: center; color: black;'>Daily Timeline(Positive)</h3>",unsafe_allow_html=True)
-                
-            daily_timeline = helper.sentiment_daily_timeline(selected_user, df, 1)
-                
-            fig, ax = plt.subplots()
-            ax.plot(daily_timeline['only_date'],daily_timeline['message'], color='green')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col2:
-            st.markdown("<h3 style='text-align: center; color: black;'>Daily Timeline(Neutral)</h3>",unsafe_allow_html=True)
-                
-            daily_timeline = helper.sentiment_daily_timeline(selected_user, df, 0)
-                
-            fig, ax = plt.subplots()
-            ax.plot(daily_timeline['only_date'], daily_timeline['message'], color='grey')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col3:
-            st.markdown("<h3 style='text-align: center; color: black;'>Daily Timeline(Negative)</h3>",unsafe_allow_html=True)
-                
-            daily_timeline = helper.sentiment_daily_timeline(selected_user, df, -1)
-                
-            fig, ax = plt.subplots()
-            ax.plot(daily_timeline['only_date'],daily_timeline['message'], color='red')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-            
+        
         
             
 
