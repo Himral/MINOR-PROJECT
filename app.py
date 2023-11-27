@@ -149,7 +149,9 @@ if uploaded_file is not None:
     
         #most active users (in group)
         if selected_user == 'Overall':
-            st.title('Most Active Users')
+            st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Most Active Users</h2>",unsafe_allow_html=True)
+            st.subheader("")
+            st.write("  ")
             x, new_df =helper.most_busy_users(df)
             fig, ax = plt.subplots()
 
@@ -164,6 +166,45 @@ if uploaded_file is not None:
             
             with col2:
                 st.dataframe(new_df)
+                
+        if selected_user == 'Overall':
+                
+                # Getting names per sentiment
+            x = df['user'][df['value'] == 1].value_counts().head(10)
+            y = df['user'][df['value'] == -1].value_counts().head(10)
+            z = df['user'][df['value'] == 0].value_counts().head(10)
+            st.markdown("<h2 style='text-align: center; color: green;'>Sentiment Analysis: Most Active users</h2>",unsafe_allow_html=True)
+            st.subheader("")
+            st.write("  ")
+            col1,col2,col3 = st.columns(3)
+            with col1:
+                    # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Most Positive Users</h3>",unsafe_allow_html=True)
+                    
+                    # Displaying
+                fig, ax = plt.subplots()
+                ax.bar(x.index, x.values, color='green')
+                plt.xticks(rotation='vertical')
+                st.pyplot(fig)
+            with col2:
+                    # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Most Neutral Users</h3>",unsafe_allow_html=True)
+                    
+                    # Displaying
+                fig, ax = plt.subplots()
+                ax.bar(z.index, z.values, color='grey')
+                plt.xticks(rotation='vertical')
+                st.pyplot(fig)
+            with col3:
+                    # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Most Negative Users</h3>",unsafe_allow_html=True)
+                    
+                    # Displaying
+                fig, ax = plt.subplots()
+                ax.bar(y.index, y.values, color='red')
+                plt.xticks(rotation='vertical')
+                st.pyplot(fig)
+
 
         #activity map
         st.title('Activity Map')
@@ -185,19 +226,62 @@ if uploaded_file is not None:
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
              
-        st.title("Weekly Activity Map")
+        st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Most Active Hour of the Week</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
         user_heatmap=helper.activity_heatmap(selected_user,df)
         fig,ax=plt.subplots()
         ax = sns.heatmap(user_heatmap)
         st.pyplot(fig)
-                
+        st.markdown("<h2 style='text-align: center; color: green;'>Sentiment Analysis: Most Active Hour of the Week</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            try:
+                st.markdown("<h3 style='text-align: center; color: black;'>Weekly Activity Map(Positive)</h3>",unsafe_allow_html=True)
+                    
+                user_heatmap = helper.sentiment_activity_heatmap(selected_user, df, 1)
+                    
+                fig, ax = plt.subplots()
+                ax = sns.heatmap(user_heatmap)
+                st.pyplot(fig)
+            except:
+                st.image('error.webp')
+        with col2:
+            try:
+                st.markdown("<h3 style='text-align: center; color: black;'>Weekly Activity Map(Neutral)</h3>",unsafe_allow_html=True)
+                    
+                user_heatmap = helper.sentiment_activity_heatmap(selected_user, df, 0)
+                    
+                fig, ax = plt.subplots()
+                ax = sns.heatmap(user_heatmap)
+                st.pyplot(fig)
+            except:
+                st.image('error.webp')
+        with col3:
+            try:
+                st.markdown("<h3 style='text-align: center; color: black;'>Weekly Activity Map(Negative)</h3>",unsafe_allow_html=True)
+                    
+                user_heatmap = helper.sentiment_activity_heatmap(selected_user, df, -1)
+                    
+                fig, ax = plt.subplots()
+                ax = sns.heatmap(user_heatmap)
+                st.pyplot(fig)
+            except:
+                st.image('error.webp')
         #wordcloud
-        st.title("Word Cloud")
+        st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Wordcloud</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
         df_wc = helper.create_wordcloud(selected_user,df)
         fig, ax = plt.subplots()
         ax.imshow(df_wc)
         st.pyplot(fig)
-
+        
+        st.markdown("<h2 style='text-align: center; color: green;'>Sentiment Analysis: Wordcloud</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
         col1,col2,col3 = st.columns(3)
         with col1:
             try:
@@ -244,11 +328,56 @@ if uploaded_file is not None:
         fig, ax = plt.subplots()
         ax.barh(most_common_df[0],most_common_df[1])
         plt.xticks(rotation = 'vertical')
-        st.title('Most frequent Words')
+        st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Most Frequent Words</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
         st.pyplot(fig)
-
-        #Sentiment Analysis
-        
+        st.markdown("<h2 style='text-align: center; color: green;'>Sentiment Analysis: Most Frequent Words</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            try:
+                    # df frame of most common positive words.
+                most_common_df = helper.sentiment_most_common_words(selected_user, df,1)
+                    
+                    # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Positive Words</h3>",unsafe_allow_html=True)
+                fig, ax = plt.subplots()
+                ax.barh(most_common_df[0], most_common_df[1],color='green')
+                plt.xticks(rotation='vertical')
+                st.pyplot(fig)
+            except:
+                    # Disply error image
+                st.image('error.webp')
+        with col2:
+            try:
+                    # df frame of most common neutral words.
+                most_common_df = helper.sentiment_most_common_words(selected_user, df,0)
+                    
+                    # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Neutral Words</h3>",unsafe_allow_html=True)
+                fig, ax = plt.subplots()
+                ax.barh(most_common_df[0], most_common_df[1],color='grey')
+                plt.xticks(rotation='vertical')
+                st.pyplot(fig)
+            except:
+                    # Disply error image
+                st.image('error.webp')
+        with col3:
+            try:
+                    # df frame of most common negative words.
+                most_common_df = helper.sentiment_most_common_words(selected_user, df,-1)
+                    
+                    # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Negative Words</h3>",unsafe_allow_html=True)
+                fig, ax = plt.subplots()
+                ax.barh(most_common_df[0], most_common_df[1], color='red')
+                plt.xticks(rotation='vertical')
+                st.pyplot(fig)
+            except:
+                    # Disply error image
+                st.image('error.webp')     
         
             # Monthly activity map
         col1, col2, col3 = st.columns(3)
@@ -311,40 +440,7 @@ if uploaded_file is not None:
             st.pyplot(fig)
 
             # Weekly activity map
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            try:
-                st.markdown("<h3 style='text-align: center; color: black;'>Weekly Activity Map(Positive)</h3>",unsafe_allow_html=True)
-                    
-                user_heatmap = helper.sentiment_activity_heatmap(selected_user, df, 1)
-                    
-                fig, ax = plt.subplots()
-                ax = sns.heatmap(user_heatmap)
-                st.pyplot(fig)
-            except:
-                st.image('error.webp')
-        with col2:
-            try:
-                st.markdown("<h3 style='text-align: center; color: black;'>Weekly Activity Map(Neutral)</h3>",unsafe_allow_html=True)
-                    
-                user_heatmap = helper.sentiment_activity_heatmap(selected_user, df, 0)
-                    
-                fig, ax = plt.subplots()
-                ax = sns.heatmap(user_heatmap)
-                st.pyplot(fig)
-            except:
-                st.image('error.webp')
-        with col3:
-            try:
-                st.markdown("<h3 style='text-align: center; color: black;'>Weekly Activity Map(Negative)</h3>",unsafe_allow_html=True)
-                    
-                user_heatmap = helper.sentiment_activity_heatmap(selected_user, df, -1)
-                    
-                fig, ax = plt.subplots()
-                ax = sns.heatmap(user_heatmap)
-                st.pyplot(fig)
-            except:
-                st.image('error.webp')
+        
 
             # Daily timeline
         col1, col2, col3 = st.columns(3)
@@ -375,94 +471,6 @@ if uploaded_file is not None:
             ax.plot(daily_timeline['only_date'],daily_timeline['message'], color='red')
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
-
-        
-
-
-            # Most Positive,Negative,Neutral User...
-        if selected_user == 'Overall':
-                
-                # Getting names per sentiment
-            x = df['user'][df['value'] == 1].value_counts().head(10)
-            y = df['user'][df['value'] == -1].value_counts().head(10)
-            z = df['user'][df['value'] == 0].value_counts().head(10)
-
-            col1,col2,col3 = st.columns(3)
-            with col1:
-                    # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Most Positive Users</h3>",unsafe_allow_html=True)
-                    
-                    # Displaying
-                fig, ax = plt.subplots()
-                ax.bar(x.index, x.values, color='green')
-                plt.xticks(rotation='vertical')
-                st.pyplot(fig)
-            with col2:
-                    # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Most Neutral Users</h3>",unsafe_allow_html=True)
-                    
-                    # Displaying
-                fig, ax = plt.subplots()
-                ax.bar(z.index, z.values, color='grey')
-                plt.xticks(rotation='vertical')
-                st.pyplot(fig)
-            with col3:
-                    # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Most Negative Users</h3>",unsafe_allow_html=True)
-                    
-                    # Displaying
-                fig, ax = plt.subplots()
-                ax.bar(y.index, y.values, color='red')
-                plt.xticks(rotation='vertical')
-                st.pyplot(fig)
-
-            # WORDCLOUD......
-       
-
-            # Most common positive words
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            try:
-                    # df frame of most common positive words.
-                most_common_df = helper.sentiment_most_common_words(selected_user, df,1)
-                    
-                    # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Positive Words</h3>",unsafe_allow_html=True)
-                fig, ax = plt.subplots()
-                ax.barh(most_common_df[0], most_common_df[1],color='green')
-                plt.xticks(rotation='vertical')
-                st.pyplot(fig)
-            except:
-                    # Disply error image
-                st.image('error.webp')
-        with col2:
-            try:
-                    # df frame of most common neutral words.
-                most_common_df = helper.sentiment_most_common_words(selected_user, df,0)
-                    
-                    # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Neutral Words</h3>",unsafe_allow_html=True)
-                fig, ax = plt.subplots()
-                ax.barh(most_common_df[0], most_common_df[1],color='grey')
-                plt.xticks(rotation='vertical')
-                st.pyplot(fig)
-            except:
-                    # Disply error image
-                st.image('error.webp')
-        with col3:
-            try:
-                    # df frame of most common negative words.
-                most_common_df = helper.sentiment_most_common_words(selected_user, df,-1)
-                    
-                    # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Negative Words</h3>",unsafe_allow_html=True)
-                fig, ax = plt.subplots()
-                ax.barh(most_common_df[0], most_common_df[1], color='red')
-                plt.xticks(rotation='vertical')
-                st.pyplot(fig)
-            except:
-                    # Disply error image
-                st.image('error.webp')
             
         
             
