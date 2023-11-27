@@ -195,7 +195,47 @@ if uploaded_file is not None:
         fig, ax = plt.subplots()
         ax.imshow(df_wc)
         st.pyplot(fig)
-        
+
+        col1,col2,col3 = st.columns(3)
+        with col1:
+            try:
+                # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Positive WordCloud</h3>",unsafe_allow_html=True)
+                    
+                # Creating wordcloud of positive words
+                df_wc = helper.sentiment_create_wordcloud(selected_user, df,1)
+                fig, ax = plt.subplots()
+                ax.imshow(df_wc)
+                st.pyplot(fig)
+            except:
+                # Display error message
+                st.image('error.webp')
+        with col2:
+            try:
+                    # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Neutral WordCloud</h3>",unsafe_allow_html=True)
+                    
+                    # Creating wordcloud of neutral words
+                df_wc = helper.sentiment_create_wordcloud(selected_user, df,0)
+                fig, ax = plt.subplots()
+                ax.imshow(df_wc)
+                st.pyplot(fig)
+            except:
+                    # Display error message
+                st.image('error.webp')
+        with col3:
+            try:
+                    # heading
+                st.markdown("<h3 style='text-align: center; color: black;'>Negative WordCloud</h3>",unsafe_allow_html=True)
+                    
+                    # Creating wordcloud of negative words
+                df_wc = helper.sentiment_create_wordcloud(selected_user, df,-1)
+                fig, ax = plt.subplots()
+                ax.imshow(df_wc)
+                st.pyplot(fig)
+            except:
+                    # Display error message
+                st.image('error.webp')
         #Frequent Words
         most_common_df= helper.most_common_words(selected_user,df)
         
@@ -375,46 +415,7 @@ if uploaded_file is not None:
                 st.pyplot(fig)
 
             # WORDCLOUD......
-        col1,col2,col3 = st.columns(3)
-        with col1:
-            try:
-                # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Positive WordCloud</h3>",unsafe_allow_html=True)
-                    
-                # Creating wordcloud of positive words
-                df_wc = helper.sentiment_create_wordcloud(selected_user, df,1)
-                fig, ax = plt.subplots()
-                ax.imshow(df_wc)
-                st.pyplot(fig)
-            except:
-                # Display error message
-                st.image('error.webp')
-        with col2:
-            try:
-                    # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Neutral WordCloud</h3>",unsafe_allow_html=True)
-                    
-                    # Creating wordcloud of neutral words
-                df_wc = helper.sentiment_create_wordcloud(selected_user, df,0)
-                fig, ax = plt.subplots()
-                ax.imshow(df_wc)
-                st.pyplot(fig)
-            except:
-                    # Display error message
-                st.image('error.webp')
-        with col3:
-            try:
-                    # heading
-                st.markdown("<h3 style='text-align: center; color: black;'>Negative WordCloud</h3>",unsafe_allow_html=True)
-                    
-                    # Creating wordcloud of negative words
-                df_wc = helper.sentiment_create_wordcloud(selected_user, df,-1)
-                fig, ax = plt.subplots()
-                ax.imshow(df_wc)
-                st.pyplot(fig)
-            except:
-                    # Display error message
-                st.image('error.webp')
+       
 
             # Most common positive words
         col1, col2, col3 = st.columns(3)
