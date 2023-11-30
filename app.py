@@ -54,12 +54,19 @@ if uploaded_file is not None:
             st.title(num_links)
 
         #monthly timeline quantitative
-        st. markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis : Monthly Timeline</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Monthly Timeline</h2>", unsafe_allow_html=True)
         st.subheader("")
         st.write("  ")
-        timeline=helper.monthly_timeline(selected_user,df)
 
-        st.area_chart(timeline,x ='time',y ='message')
+        timeline = helper.monthly_timeline(selected_user, df)
+        #timeline['time'] = pd.to_datetime(timeline['time'])
+        #timeline['month_year'] = timeline['time'].dt.to_period('M')
+  # Create a new column combining month and year
+        #timeline = timeline.sort_values('month_year')
+
+        #st.dataframe(timeline)
+        st.line_chart(timeline, x='time', y='message')
+
         
         
 

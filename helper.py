@@ -92,6 +92,7 @@ def monthly_timeline(selected_user,df):
         time.append(timeline['month'][i] + "-" + str(timeline['year'][i]))
 
     timeline['time'] = time
+    timeline = timeline.sort_values('month_num')
 
     return timeline
 
@@ -166,7 +167,7 @@ def sentiment_daily_timeline(selected_user,df,k):
 def sentiment_monthly_timeline(selected_user,df,k):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
-    df = df[df['value']==-k]
+    df = df[df['value']== k]
     timeline = df.groupby(['year', 'month_num', 'month']).count()['message'].reset_index()
     time = []
     for i in range(timeline.shape[0]):
@@ -177,7 +178,7 @@ def sentiment_monthly_timeline(selected_user,df,k):
 # Will return percentage of message contributed having k(0/1/-1) sentiment
 def sentiment_percentage(df,k):
     df = round((df['user'][df['value']==k].value_counts() / df[df['value']==k].shape[0]) * 100, 2).reset_index().rename(
-        columns={'index': 'name', 'user': 'percent'})
+        columns={'index': 'name', 'user': 'user'})
     return df
 
 # Return wordcloud from words in message
