@@ -248,7 +248,9 @@ if uploaded_file is not None:
 
 
         #activity map
-        st.title('Activity Map')
+        st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Most Busy Month</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
         col1,col2=st.columns(2)
 
         with col1:
@@ -266,7 +268,39 @@ if uploaded_file is not None:
             ax.bar(busy_month.index,busy_month.values,color='orange')
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
-             
+            
+        # Monthly activity map
+        st.markdown("<h2 style='text-align: center; color: green;'>Sentiment Analysis: Most Busy month</h2>",unsafe_allow_html=True)
+        st.subheader("")
+        st.write("  ")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Positive)</h3>",unsafe_allow_html=True)
+                
+            busy_month = helper.sentiment_month_activity_map(selected_user, df,1)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_month.index, busy_month.values, color='green')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+        with col2:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Neutral)</h3>",unsafe_allow_html=True)
+                
+            busy_month = helper.sentiment_month_activity_map(selected_user, df, 0)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_month.index, busy_month.values, color='grey')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+        with col3:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Negative)</h3>",unsafe_allow_html=True)
+                
+            busy_month = helper.sentiment_month_activity_map(selected_user, df, -1)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_month.index, busy_month.values, color='red')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
         st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Most Active Hour of the Week</h2>",unsafe_allow_html=True)
         st.subheader("")
         st.write("  ")
@@ -420,35 +454,7 @@ if uploaded_file is not None:
                     # Disply error image
                 st.image('error.webp')     
         
-            # Monthly activity map
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Positive)</h3>",unsafe_allow_html=True)
-                
-            busy_month = helper.sentiment_month_activity_map(selected_user, df,1)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_month.index, busy_month.values, color='green')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col2:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Neutral)</h3>",unsafe_allow_html=True)
-                
-            busy_month = helper.sentiment_month_activity_map(selected_user, df, 0)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_month.index, busy_month.values, color='grey')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col3:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Negative)</h3>",unsafe_allow_html=True)
-                
-            busy_month = helper.sentiment_month_activity_map(selected_user, df, -1)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_month.index, busy_month.values, color='red')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
+            
 
             # Daily activity map
         col1, col2, col3 = st.columns(3)
@@ -480,7 +486,6 @@ if uploaded_file is not None:
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
 
-            # Weekly activity map
         
 
         
