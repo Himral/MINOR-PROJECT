@@ -295,7 +295,34 @@ if uploaded_file is not None:
             ax.bar(busy_day.index, busy_day.values, color='red')
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
-            
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Positive)</h3>",unsafe_allow_html=True)
+                
+            busy_month = helper.sentiment_month_activity_map(selected_user, df,1)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_month.index, busy_month.values, color='green')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+        with col2:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Neutral)</h3>",unsafe_allow_html=True)
+                
+            busy_month = helper.sentiment_month_activity_map(selected_user, df, 0)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_month.index, busy_month.values, color='grey')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+        with col3:
+            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Negative)</h3>",unsafe_allow_html=True)
+                
+            busy_month = helper.sentiment_month_activity_map(selected_user, df, -1)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_month.index, busy_month.values, color='red')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
         st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Most Active Hour of the Week</h2>",unsafe_allow_html=True)
         st.subheader("")
         st.write("  ")
@@ -450,34 +477,7 @@ if uploaded_file is not None:
                 st.image('error.webp')     
         
             # Monthly activity map
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Positive)</h3>",unsafe_allow_html=True)
-                
-            busy_month = helper.sentiment_month_activity_map(selected_user, df,1)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_month.index, busy_month.values, color='green')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col2:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Neutral)</h3>",unsafe_allow_html=True)
-                
-            busy_month = helper.sentiment_month_activity_map(selected_user, df, 0)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_month.index, busy_month.values, color='grey')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col3:
-            st.markdown("<h3 style='text-align: center; color: black;'>Monthly Activity map(Negative)</h3>",unsafe_allow_html=True)
-                
-            busy_month = helper.sentiment_month_activity_map(selected_user, df, -1)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_month.index, busy_month.values, color='red')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
+        
 
             # Daily activity map
         
