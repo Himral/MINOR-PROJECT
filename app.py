@@ -24,7 +24,7 @@ if uploaded_file is not None:
     bytes_df = uploaded_file.getvalue()
     data = bytes_df.decode("utf-8")
     df = preprocessor.preprocess(data)
-
+    
     st.dataframe(df)
 
     #fetch unique users

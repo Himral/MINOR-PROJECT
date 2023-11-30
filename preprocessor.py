@@ -25,8 +25,19 @@ def preprocess(data):
         else:
             users.append('group_notification')
             messages.append(entry[0])
+    
+    
 
-    df['user'] = users
+    x = []
+    for i in users:
+        if i not in x:
+            x.append(i)
+    res = []
+    for i in users:
+        res.append("user " + str(x.index(i)))
+
+    
+    df['user'] = res
     df['message'] = messages
     df.drop(columns=['user_message'], inplace=True)
 
