@@ -266,7 +266,36 @@ if uploaded_file is not None:
             ax.bar(busy_month.index,busy_month.values,color='orange')
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
-             
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown("<h3 style='text-align: center; color: black;'>Daily Activity map(Positive)</h3>",unsafe_allow_html=True)
+                
+            busy_day = helper.sentiment_week_activity_map(selected_user, df,1)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_day.index, busy_day.values,color='green')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+        with col2:
+            st.markdown("<h3 style='text-align: center; color: black;'>Daily Activity map(Neutral)</h3>",unsafe_allow_html=True)
+                
+            busy_day = helper.sentiment_week_activity_map(selected_user, df, 0)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_day.index, busy_day.values, color='grey')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+        with col3:
+            st.markdown("<h3 style='text-align: center; color: black;'>Daily Activity map(Negative)</h3>",unsafe_allow_html=True)
+                
+            busy_day = helper.sentiment_week_activity_map(selected_user, df, -1)
+                
+            fig, ax = plt.subplots()
+            ax.bar(busy_day.index, busy_day.values, color='red')
+            plt.xticks(rotation='vertical')
+            st.pyplot(fig)
+            
         st.markdown("<h2 style='text-align: center; color: green;'>Quantitative Analysis: Most Active Hour of the Week</h2>",unsafe_allow_html=True)
         st.subheader("")
         st.write("  ")
@@ -451,34 +480,7 @@ if uploaded_file is not None:
             st.pyplot(fig)
 
             # Daily activity map
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown("<h3 style='text-align: center; color: black;'>Daily Activity map(Positive)</h3>",unsafe_allow_html=True)
-                
-            busy_day = helper.sentiment_week_activity_map(selected_user, df,1)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_day.index, busy_day.values,color='green')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col2:
-            st.markdown("<h3 style='text-align: center; color: black;'>Daily Activity map(Neutral)</h3>",unsafe_allow_html=True)
-                
-            busy_day = helper.sentiment_week_activity_map(selected_user, df, 0)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_day.index, busy_day.values, color='grey')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
-        with col3:
-            st.markdown("<h3 style='text-align: center; color: black;'>Daily Activity map(Negative)</h3>",unsafe_allow_html=True)
-                
-            busy_day = helper.sentiment_week_activity_map(selected_user, df, -1)
-                
-            fig, ax = plt.subplots()
-            ax.bar(busy_day.index, busy_day.values, color='red')
-            plt.xticks(rotation='vertical')
-            st.pyplot(fig)
+        
 
             # Weekly activity map
         
