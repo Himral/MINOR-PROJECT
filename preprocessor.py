@@ -8,6 +8,7 @@ def preprocess(data):
     dates = re.findall(pattern, data)
 
     df = pd.DataFrame({'user_message': messages, 'message_date': dates})
+    
     # convert message_date type
     try:
         df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')

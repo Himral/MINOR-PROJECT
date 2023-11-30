@@ -1,3 +1,0 @@
-stop words - words that don't change the intended meaning if omitted , training , accuracy NLP - on hold , data visualisation, pre processing , activity map - time period vs days [ which user access the database at what time] , word cloud - most common words - area map , heat map created using seaborn, pandas - series dataframe , pre processing , regex - pattern find out - classify , utf-8 encoding , data engineering - data processing , structured data frame - series - column,
-idea 
-heat map material
